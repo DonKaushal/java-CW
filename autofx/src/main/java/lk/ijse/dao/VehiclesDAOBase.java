@@ -26,7 +26,7 @@ public class VehiclesDAOBase implements VehiclesDAO {
             getOwnerQuery = conn.prepareStatement("SELECT * FROM owner WHERE id=?");
             getNewOwnerIdQuery = conn.prepareStatement("SELECT MAX(id)+1 FROM owner");
             addOwnerQuery = conn.prepareStatement("INSERT INTO owner VALUES (?,?,?,?,?,?,?,?,?)");
-            changeOwnerQuery = conn.prepareStatement("UPDATE owner SET first_name=?, last_name=?, parent_name=?, date_of_birth=?, place_of_birth=?, address=?, place_of_residence=?, national_id_number=? WHERE id=?");
+            changeOwnerQuery = conn.prepareStatement("UPDATE owner SET first_name=?, last_name=?, parent_name=?, date_of_birth=?,address=? WHERE id=?");
             deleteOwnerQuery = conn.prepareStatement("DELETE FROM owner WHERE id=?");
 
             //Vehicle
@@ -38,10 +38,10 @@ public class VehiclesDAOBase implements VehiclesDAO {
             deleteVehicleQuery = conn.prepareStatement("DELETE FROM vehicle WHERE id=?");
 
             //Location
-            getLocationsQuery = conn.prepareStatement("SELECT * FROM location ORDER BY name");
-            getLocationQuery = conn.prepareStatement("SELECT * FROM location WHERE id=?");
-            getNewLocationIdQuery = conn.prepareStatement("SELECT MAX(id)+1 FROM location");
-            addLocationQuery = conn.prepareStatement("INSERT INTO location VALUES (?,?,?)");
+//            getLocationsQuery = conn.prepareStatement("SELECT * FROM location ORDER BY name");
+//            getLocationQuery = conn.prepareStatement("SELECT * FROM location WHERE id=?");
+//            getNewLocationIdQuery = conn.prepareStatement("SELECT MAX(id)+1 FROM location");
+//            addLocationQuery = conn.prepareStatement("INSERT INTO location VALUES (?,?,?)");
 
             //Brand
             getBrandsQuery = conn.prepareStatement("SELECT * FROM brand ORDER BY name");
@@ -139,24 +139,23 @@ public class VehiclesDAOBase implements VehiclesDAO {
     }
 
     private Owner getOwnerFromResultSet(ResultSet rs) throws SQLException {
-        getLocationQuery.setInt(1, rs.getInt(6));
-        ResultSet rs2 = getLocationQuery.executeQuery();
-        Location placeOfBirth = null;
-        while (rs2.next()) {
-            placeOfBirth = new Location(rs2.getInt(1), rs2.getString(2), rs2.getString(3));
-        }
+//        getLocationQuery.setInt(1, rs.getInt(6));
+//        ResultSet rs2 = getLocationQuery.executeQuery();
+//        Location placeOfBirth = null;
+//        while (rs2.next()) {
+//            placeOfBirth = new Location(rs2.getInt(1), rs2.getString(2), rs2.getString(3));
+//        }
 
-        getLocationQuery.setInt(1, rs.getInt(8));
-        rs2 = getLocationQuery.executeQuery();
-        Location placeOfResidence = null;
-        while (rs2.next()) {
-            placeOfResidence = new Location(rs2.getInt(1), rs2.getString(2), rs2.getString(3));
-        }
+//        getLocationQuery.setInt(1, rs.getInt(8));
+//        rs2 = getLocationQuery.executeQuery();
+//        Location placeOfResidence = null;
+//        while (rs2.next()) {
+//            placeOfResidence = new Location(rs2.getInt(1), rs2.getString(2), rs2.getString(3));
+//        }
 
-        LocalDate dateOfBirth = rs.getDate(5).toLocalDate();
+//        LocalDate dateOfBirth = rs.getDate(5).toLocalDate();
 
-        Owner owner = new Owner(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
-                dateOfBirth, placeOfBirth, rs.getString(7), placeOfResidence, rs.getString(9));
+        Owner owner = new Owner(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
         return owner;
     }
 
@@ -343,8 +342,7 @@ public class VehiclesDAOBase implements VehiclesDAO {
     @Override
     public void addOwner(Owner owner) {
         try {
-            owner.setPlaceOfBirth(addLocationIfNotExists(owner.getPlaceOfBirth()));
-            owner.setPlaceOfResidence(addLocationIfNotExists(owner.getPlaceOfResidence()));
+
 
             ResultSet rs = getNewOwnerIdQuery.executeQuery();
             int newId = 1;
@@ -354,12 +352,9 @@ public class VehiclesDAOBase implements VehiclesDAO {
             addOwnerQuery.setInt(1, owner.getId());
             addOwnerQuery.setString(2, owner.getFirstName());
             addOwnerQuery.setString(3, owner.getLastName());
-            addOwnerQuery.setString(4, owner.getParentName());
-            addOwnerQuery.setDate(5, Date.valueOf(owner.getDateOfBirth()));
-            addOwnerQuery.setInt(6, owner.getPlaceOfBirth().getId());
+
             addOwnerQuery.setString(7, owner.getAddress());
-            addOwnerQuery.setInt(8, owner.getPlaceOfResidence().getId());
-            addOwnerQuery.setString(9, owner.getNationalIdNumber());
+
             addOwnerQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -369,17 +364,13 @@ public class VehiclesDAOBase implements VehiclesDAO {
     @Override
     public void changeOwner(Owner owner) {
         try {
-            owner.setPlaceOfBirth(addLocationIfNotExists(owner.getPlaceOfBirth()));
-            owner.setPlaceOfResidence(addLocationIfNotExists(owner.getPlaceOfResidence()));
+
             changeOwnerQuery.setInt(9, owner.getId());
             changeOwnerQuery.setString(1, owner.getFirstName());
             changeOwnerQuery.setString(2, owner.getLastName());
-            changeOwnerQuery.setString(3, owner.getParentName());
-            changeOwnerQuery.setDate(4, Date.valueOf(owner.getDateOfBirth()));
-            changeOwnerQuery.setInt(5, owner.getPlaceOfBirth().getId());
+
             changeOwnerQuery.setString(6, owner.getAddress());
-            changeOwnerQuery.setInt(7, owner.getPlaceOfResidence().getId());
-            changeOwnerQuery.setString(8, owner.getNationalIdNumber());
+
             changeOwnerQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

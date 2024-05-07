@@ -117,8 +117,7 @@ public class VehiclesDAOXML implements VehiclesDAO {
 
     @Override
     public void addOwner(Owner owner) {
-        owner.setPlaceOfBirth(addLocationIfNotExists(owner.getPlaceOfBirth()));
-        owner.setPlaceOfResidence(addLocationIfNotExists(owner.getPlaceOfResidence()));
+
 
         int maxId = 0;
         for (Owner o : owners)
@@ -147,8 +146,6 @@ public class VehiclesDAOXML implements VehiclesDAO {
 
     @Override
     public void changeOwner(Owner owner) {
-        owner.setPlaceOfBirth(addLocationIfNotExists(owner.getPlaceOfBirth()));
-        owner.setPlaceOfResidence(addLocationIfNotExists(owner.getPlaceOfResidence()));
         for (int i = 0; i < owners.size(); i++)
             if (owners.get(i).getId() == owner.getId())
                 owners.set(i, owner);
