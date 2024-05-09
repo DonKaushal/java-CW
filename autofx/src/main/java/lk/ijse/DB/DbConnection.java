@@ -9,7 +9,8 @@ public class DbConnection {
     private static DbConnection dbConnection;
     private Connection connection;
 
-    private DbConnection() throws SQLException {
+    private DbConnection() throws SQLException, ClassNotFoundException {
+        Class.forName("com.mysql.cj.jdbc.Driver");
         connection = DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/autoZone",
                 "root",
@@ -17,7 +18,7 @@ public class DbConnection {
         );
     }
 
-    public static DbConnection getInstance() throws SQLException {
+    public static DbConnection getInstance() throws SQLException, ClassNotFoundException {
         if(dbConnection == null) {
             dbConnection = new DbConnection();
         }

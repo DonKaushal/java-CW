@@ -155,7 +155,7 @@ public class VehiclesDAOBase implements VehiclesDAO {
 
 //        LocalDate dateOfBirth = rs.getDate(5).toLocalDate();
 
-        Owner owner = new Owner(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
+        Owner owner = new Owner( rs.getString(1), rs.getString(2), rs.getString(3),rs.getString(4));
         return owner;
     }
 
@@ -365,11 +365,13 @@ public class VehiclesDAOBase implements VehiclesDAO {
     public void changeOwner(Owner owner) {
         try {
 
-            changeOwnerQuery.setInt(9, owner.getId());
+
             changeOwnerQuery.setString(1, owner.getFirstName());
             changeOwnerQuery.setString(2, owner.getLastName());
 
-            changeOwnerQuery.setString(6, owner.getAddress());
+            changeOwnerQuery.setString(3, owner.getAddress());
+            changeOwnerQuery.setString(4, owner.getContact());
+
 
             changeOwnerQuery.executeUpdate();
         } catch (SQLException e) {

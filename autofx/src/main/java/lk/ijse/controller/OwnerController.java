@@ -1,5 +1,6 @@
 package lk.ijse.controller;
 
+import javafx.scene.control.Button;
 import lk.ijse.dto.Location;
 import lk.ijse.dto.Owner;
 import lk.ijse.dao.VehiclesDAO;
@@ -20,6 +21,9 @@ public class OwnerController {
     public TextField firstNameField;
     public TextField lastNameField;
     public TextField addressField;
+    public TextField contactField;
+
+    public Button okCickButton;
 
     public OwnerController() {
         dao = null;
@@ -39,7 +43,7 @@ public class OwnerController {
             firstNameField.setText(owner.getFirstName());
             lastNameField.setText(owner.getLastName());
             addressField.setText(owner.getAddress());
-
+            contactField.setText(owner.getContact());
         }
     }
 
@@ -48,6 +52,8 @@ public class OwnerController {
         boolean allOk = validateEmpty(firstNameField);
         allOk &= validateEmpty(lastNameField);
         allOk &= validateEmpty(addressField);
+        allOk &= validateEmpty(contactField);
+
 
     }
 
@@ -58,13 +64,14 @@ public class OwnerController {
 
     private void addChangeOwner() {
         if (owner == null) {
-            owner = new Owner(0, firstNameField.getText(), lastNameField.getText() , addressField.getText());
+            owner = new Owner( firstNameField.getText(), lastNameField.getText() , addressField.getText() , contactField.getText());
             dao.addOwner(owner);
         } else {
             owner.setFirstName(firstNameField.getText());
             owner.setLastName(lastNameField.getText());
 
             owner.setAddress(addressField.getText());
+            owner.setContact(contactField.getText());
 
             dao.changeOwner(owner);
         }
@@ -83,7 +90,6 @@ public class OwnerController {
         }
 
     }
-
 
 }
 

@@ -1,28 +1,27 @@
 package lk.ijse.dto;
 
-import java.time.LocalDate;
-
 public class Owner {
 
-    private int id;
     private String firstName, lastName;
 
     private String address;
+    private String contact;
 
 
+    public Owner( String firstName, String lastName, String address,String contact) {
 
-    public Owner(int id, String firstName, String lastName,  String address) {
 
-        this.id=id;
         this.firstName = firstName;
         this.lastName = lastName;
-
         this.address = address;
+        this.contact = contact;
 
     }
+public String setContact(String text){ this.contact= contact;
+    return text;
+}
 
-
-
+  //  public String getContact(){ return  contact;}
     public String getFirstName() {
         return firstName;
     }
@@ -48,13 +47,7 @@ public class Owner {
         this.address = address;
     }
 
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
 
 
@@ -63,4 +56,20 @@ public class Owner {
     public String toString() {
         return firstName + ' ' + lastName;
     }
+
+    public String getContact() {
+        String contact = null;
+        return contact; }
+
+    public void setId(int newId) {
+    }
+
+    public int getId() {
+        return 0;
+    }
+
+    public Location getPlaceOfResidence() {
+        return null;
+    }
 }
+
